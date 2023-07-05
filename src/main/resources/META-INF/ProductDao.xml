@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductDao">
+
+    <resultMap id="result" type="com.example.demo.entity.ProductEntity">
+
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phoneNumber"/>
+
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.demo.entity.ProductEntity">
+        INSERT INTO product2(id, name, email, phoneNumber)
+        VALUES (#{id}, #{name}, #{email},#{phoneNumber});
+    </insert>
+
+    <select id="getAllProducts" resultType="product" resultMap="result">
+        SELECT *
+        FROM product2 OFFSET #{offset} LIMIT #{pageSize}
+    </select>
+
+    <select id="getById" resultMap="result">
+        SELECT id, name FROM product1 WHERE id=#{id};
+    </select>
+
+    <update id="update">
+        UPDATE product2 SET id=#{id}, name =#{name}, email = #{email}, phoneNumber =#{phoneNumber} WHERE id =#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM product1 WHERE id= #{id}
+    </delete>
+
+    <select id="searchByName" resultMap="result" parameterType="com.example.demo.entity.ProductEntity">
+        SELECT * FROM product2 WHERE LOWER(name) LIKE CONCAT('%', LOWER(#{name}), '%')
+    </select>
+
+
+    <select id="searchNameStartsWith" resultMap="result">
+        SELECT * FROM product2 WHERE LOWER(name) LIKE LOWER(#{prefix} ||'%')
+    </select>
+
+
+    <select id="searchByDynamic" resultType="com.example.demo.entity.ProductEntity" resultMap="result">
+        SELECT * FROM product2
+            <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="name != null and name != ''">
+                AND LOWER(name) LIKE CONCAT('%', LOWER(#{name}), '%')
+            </if>
+            <if test="id != null">
+                <if test="id.intValue() != 0">
+                    AND id = #{id}
+                </if>
+            </if>
+            <if test="email != null and email != ''">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="phoneNumber != null">
+                AND phoneNumber = #{phoneNumber}
+            </if>
+        </trim>
+    </select>
+
+
+    <update id ="updateDynamically">
+        update Product2
+        <set>
+            <if test="id != null">
+                <if test="id.intValue() !=0">
+                    id =#{id},
+                </if>
+            </if>
+            <if test="name != null"> name =#{name},</if>
+            <if test="email != null"> email =#{email},</if>
+            <if test="phoneNumber != null"> phoneNumber =#{phoneNumber},</if>
+        </set>
+        WHERE id =#{id}
+    </update>
+
+
+
+
+</mapper>
