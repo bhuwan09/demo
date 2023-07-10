@@ -8,6 +8,7 @@ import com.example.demo.exceptionhandler.DataAccessException;
 import com.example.demo.service.ProductService;
 import com.example.demo.utils.ApiResponse;
 import com.example.demo.utils.DeleteApiResponse;
+import com.example.demo.validation.Validation;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
@@ -42,9 +43,14 @@ public class Controller {
     @POST
     @Path("/add")
     public ApiResponse<ProductDomain> addProduct(ProductDomain domain) {
+    if(Validation.validateInput(domain)) {
         ProductDomain add = productService.add(domain);
         return new ApiResponse<>("00", "product added successfully", add);
 //        return null;
+    }else{
+        ProductDomain details = null;
+        return new ApiResponse<>("01","Please enter valid input", details);
+    }
     }
 
 

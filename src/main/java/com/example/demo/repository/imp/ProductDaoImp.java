@@ -100,6 +100,7 @@ public class ProductDaoImp implements ProductDao {
         }
     }
 
+
     @Override
     public List<ProductDomain> searchByName(String name) throws DataAccessException {
         List<ProductDomain> result = session.selectList("ProductDao.searchByName", name);
