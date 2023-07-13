@@ -8,6 +8,7 @@ import com.example.demo.exceptionhandler.DataAccessException;
 import com.example.demo.service.ProductService;
 import com.example.demo.utils.ApiResponse;
 import com.example.demo.utils.DeleteApiResponse;
+import com.example.demo.validation.Validation;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Path("/product")
+@Path("/product1")
 @Default
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -42,16 +43,21 @@ public class Controller {
     @POST
     @Path("/add")
     public ApiResponse<ProductDomain> addProduct(ProductDomain domain) {
+    if(Validation.validateInput(domain)) {
         ProductDomain add = productService.add(domain);
         return new ApiResponse<>("00", "product added successfully", add);
 //        return null;
+    }else{
+        ProductDomain details = null;
+        return new ApiResponse<>("01","Please enter valid input", details);
+    }
     }
 
 
     @Path("/get/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProduct(@PathParam("id") int id) {
+    public Response getProduct(@PathParam("id") String id) {
         ProductDomain domain = productService.getById(id);
         return Response.ok().entity(domain).build();
 
@@ -90,7 +96,7 @@ public class Controller {
 
     @Path("/delete")
     @DELETE
-    public DeleteApiResponse deleteProduct(@QueryParam("id") int id) throws DataAccessException {
+    public DeleteApiResponse deleteProduct(@QueryParam("id") String id) throws DataAccessException {
         productService.delete(id);
         return new DeleteApiResponse("00", "deleted successfully");
 
@@ -121,7 +127,7 @@ public class Controller {
     @POST
     @Path("/searchDynamic")
     public List<ProductDomain> searchProducts(SearchCriteria searchCriteria) throws Exception {
-        int id = searchCriteria.getId();
+        String id = searchCriteria.getId();
         String name = searchCriteria.getName();
         String email = searchCriteria.getEmail();
         String phoneNumber = searchCriteria.getPhoneNumber();

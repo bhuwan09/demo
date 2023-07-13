@@ -1,16 +1,16 @@
 package com.example.demo.entity;
 
 public class SearchCriteria {
-    int id;
+    String id;
     String name;
     String email;
     String phoneNumber;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -14,14 +14,14 @@ public interface ProductService {
     ProductDomain add(ProductDomain domain);
 
 
-    ProductDomain getById(int id);
+    ProductDomain getById(String id);
 
     ProductDomain update(ProductDomain domain);
     ProductDomain updateDynamically(ProductDomain domain);
 
     List<ProductDomain> getAll(int pageNumber, int pageSize);
 
-    void delete(int id) throws DataAccessException;
+    void delete(String  id) throws DataAccessException;
 
     List<ProductDomain> getByName(String name) throws DataAccessException;
 

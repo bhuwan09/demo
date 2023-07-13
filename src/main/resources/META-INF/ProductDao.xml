@@ -16,21 +16,21 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.example.demo.entity.ProductEntity">
-        INSERT INTO product2(id, name, email, phoneNumber)
+        INSERT INTO product1(id, name, email, phoneNumber)
         VALUES (#{id}, #{name}, #{email},#{phoneNumber});
     </insert>
 
     <select id="getAllProducts" resultType="product" resultMap="result">
         SELECT *
-        FROM product2 OFFSET #{offset} LIMIT #{pageSize}
+        FROM product1 OFFSET #{offset} LIMIT #{pageSize}
     </select>
 
     <select id="getById" resultMap="result">
-        SELECT id, name FROM product1 WHERE id=#{id};
+        SELECT * FROM product1 WHERE id=#{id};
     </select>
 
     <update id="update">
-        UPDATE product2 SET id=#{id}, name =#{name}, email = #{email}, phoneNumber =#{phoneNumber} WHERE id =#{id}
+        UPDATE product1 SET id=#{id}, name =#{name}, email = #{email}, phoneNumber =#{phoneNumber} WHERE id =#{id}
     </update>
 
     <delete id="deleteById" parameterType="int">
@@ -38,17 +38,17 @@
     </delete>
 
     <select id="searchByName" resultMap="result" parameterType="com.example.demo.entity.ProductEntity">
-        SELECT * FROM product2 WHERE LOWER(name) LIKE CONCAT('%', LOWER(#{name}), '%')
+        SELECT * FROM product1 WHERE LOWER(name) LIKE CONCAT('%', LOWER(#{name}), '%')
     </select>
 
 
     <select id="searchNameStartsWith" resultMap="result">
-        SELECT * FROM product2 WHERE LOWER(name) LIKE LOWER(#{prefix} ||'%')
+        SELECT * FROM product1 WHERE LOWER(name) LIKE LOWER(#{prefix} ||'%')
     </select>
 
 
     <select id="searchByDynamic" resultType="com.example.demo.entity.ProductEntity" resultMap="result">
-        SELECT * FROM product2
+        SELECT * FROM product1
             <trim prefix="WHERE" prefixOverrides="AND |OR">
             <if test="name != null and name != ''">
                 AND LOWER(name) LIKE CONCAT('%', LOWER(#{name}), '%')
@@ -69,7 +69,7 @@
 
 
     <update id ="updateDynamically">
-        update Product2
+        update Product1
         <set>
             <if test="id != null">
                 <if test="id.intValue() !=0">

@@ -12,14 +12,14 @@ import java.util.Map;
 public interface ProductDao {
     ProductDomain save(ProductEntity entity);
 
-    ProductDomain getById(int id);
+    ProductDomain getById(String id);
 
     List<ProductDomain> getAll(int pageNumber, int pageSize);
 
     void update(ProductEntity entity);
     void updateDynamically(ProductEntity entity);
 
-    void delete(int id) throws DataAccessException;
+    void delete(String id) throws DataAccessException;
 
     List<ProductDomain> searchByName(String name) throws DataAccessException;
 
