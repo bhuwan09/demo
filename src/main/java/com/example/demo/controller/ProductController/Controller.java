@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Path("/product")
+@Path("/product1")
 @Default
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +57,7 @@ public class Controller {
     @Path("/get/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProduct(@PathParam("id") int id) {
+    public Response getProduct(@PathParam("id") String id) {
         ProductDomain domain = productService.getById(id);
         return Response.ok().entity(domain).build();
 
@@ -96,7 +96,7 @@ public class Controller {
 
     @Path("/delete")
     @DELETE
-    public DeleteApiResponse deleteProduct(@QueryParam("id") int id) throws DataAccessException {
+    public DeleteApiResponse deleteProduct(@QueryParam("id") String id) throws DataAccessException {
         productService.delete(id);
         return new DeleteApiResponse("00", "deleted successfully");
 
@@ -127,7 +127,7 @@ public class Controller {
     @POST
     @Path("/searchDynamic")
     public List<ProductDomain> searchProducts(SearchCriteria searchCriteria) throws Exception {
-        int id = searchCriteria.getId();
+        String id = searchCriteria.getId();
         String name = searchCriteria.getName();
         String email = searchCriteria.getEmail();
         String phoneNumber = searchCriteria.getPhoneNumber();

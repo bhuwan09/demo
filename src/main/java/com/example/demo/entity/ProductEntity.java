@@ -3,7 +3,7 @@ package com.example.demo.entity;
 import jakarta.validation.constraints.Email;
 
 public class ProductEntity {
-    private int id;
+    private String id;
     private String name;
     private String email;
     private String phoneNumber;
@@ -11,7 +11,7 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity( int id, String name, String email, String phoneNumber) {
+    public ProductEntity( String id, String name, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -34,11 +34,11 @@ public class ProductEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

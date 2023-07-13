@@ -52,7 +52,7 @@ public class ProductDaoImp implements ProductDao {
 
 
     @Override
-    public ProductDomain getById(int id) {
+    public ProductDomain getById(String id) {
         ProductEntity entity = session.selectOne("ProductDao.getById", id);
         ProductDomain productDomain = converter.toDomain(entity);
 //        session.commit();
@@ -88,7 +88,7 @@ public class ProductDaoImp implements ProductDao {
     }
 
     @Override
-    public void delete(int id) throws DataAccessException {
+    public void delete(String id) throws DataAccessException {
 
         ProductEntity entity = session.selectOne("ProductDao.getById", id);
         if (entity == null) {
@@ -99,7 +99,6 @@ public class ProductDaoImp implements ProductDao {
             session.commit();
         }
     }
-
 
     @Override
     public List<ProductDomain> searchByName(String name) throws DataAccessException {

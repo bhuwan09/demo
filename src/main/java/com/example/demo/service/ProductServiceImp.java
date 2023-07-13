@@ -37,7 +37,7 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public ProductDomain getById(int id) {
+    public ProductDomain getById(String  id) {
         ProductDomain domain = productDao.getById(id);
         return domain;
     }
@@ -56,9 +56,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public void delete(int id) throws DataAccessException {
+    public void delete(String id) throws DataAccessException {
 
-            productDao.delete(id);
+        productDao.delete(id);
     }
 
     @Override
