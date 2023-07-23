@@ -30,5 +30,6 @@
 
     <mappers>
         <mapper resource="/META-INF/ProductDao.xml"/>
+        <mapper resource="/META-INF/UserDao.xml"/>
     </mappers>
 </configuration>

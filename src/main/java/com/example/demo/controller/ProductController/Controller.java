@@ -5,21 +5,20 @@ import com.example.demo.Domain.ProductDomain;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.SearchCriteria;
 import com.example.demo.exceptionhandler.DataAccessException;
+import com.example.demo.security.TokenGenerate;
+import com.example.demo.security.TokenVerification;
 import com.example.demo.service.ProductService;
 import com.example.demo.utils.ApiResponse;
 import com.example.demo.utils.DeleteApiResponse;
 import com.example.demo.validation.Validation;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
-import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Path("/product1")
 @Default
@@ -29,14 +28,19 @@ public class Controller {
 
 
     ProductService productService;
+    TokenVerification tokenVerification;
+
+    TokenGenerate tokenGenerate;
 
     public Controller() {
 
     }
 
     @Inject
-    public Controller(ProductService productService) {
+    public Controller(ProductService productService, TokenVerification tokenVerification, TokenGenerate tokenGenerate) {
         this.productService = productService;
+        this.tokenVerification = tokenVerification;
+        this.tokenGenerate = tokenGenerate;
     }
 
 
@@ -48,8 +52,8 @@ public class Controller {
         return new ApiResponse<>("00", "product added successfully", add);
 //        return null;
     }else{
-        ProductDomain details = null;
-        return new ApiResponse<>("01","Please enter valid input", details);
+//        ProductDomain details = null;
+        return new ApiResponse<>("01","Please enter valid input", null);
     }
     }
 
@@ -66,12 +70,18 @@ public class Controller {
     @Path("/get/all/")
     @GET
 //   @Produces(MediaType.APPLICATION_JSON)
-    public List<ProductDomain> getAll(@QueryParam("pageNumber") @DefaultValue("1") int pageNumber,
-                                      @QueryParam("pageSize") @DefaultValue("10") int pageSize) throws SQLException {
+    public ApiResponse<List<ProductDomain>> getAll(@HeaderParam("Authorization") String token, @QueryParam("pageNumber") @DefaultValue("1") int pageNumber,
+                                      @QueryParam("pageSize") @DefaultValue("10") int pageSize
+                                   ) throws SQLException
+    {
+        if(!tokenVerification.verifyToken(token))
+            return new ApiResponse<List<ProductDomain>>("403","Access Denied Token Invalid", null);
         List<ProductDomain> productDomainList = productService.getAll(pageNumber, pageSize);
-        return productDomainList;
 
+        return new ApiResponse<>("00", "Result Showing for all Products",productDomainList);
     }
+
+
 
     @Path("/update")
     @PUT

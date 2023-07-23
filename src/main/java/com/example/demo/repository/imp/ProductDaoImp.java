@@ -30,7 +30,7 @@ public class ProductDaoImp implements ProductDao {
 
     private final ProductConverter converter;
     SqlSession session;
-
+  
 
     @Inject
     public ProductDaoImp(ProductConverter converter,
@@ -148,3 +148,4 @@ public class ProductDaoImp implements ProductDao {
         System.out.println("product updated successfully");
     }
 }
+
